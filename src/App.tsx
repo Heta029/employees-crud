@@ -1,25 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
+import * as React from 'react';
 import './App.css';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import EmployeeGrid from './pages/employeeGrid';
+import AddEditPage from './pages/addEditEmployee';
 
-function App() {
+
+export function App() {
+  
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <BrowserRouter>
+    <div className="row">
+    
+     <div className="col-md-8 offset-md-2">
+          <Switch>
+          <Route
+                exact={true}
+                path="/"
+                component={EmployeeGrid}
+              />
+              <Route
+                exact
+                path="/EditPage/:key"
+                component={AddEditPage}
+              />
+              <Route
+                exact
+                path="/AddPage"
+                component={AddEditPage}
+              />
+          </Switch>
+              
+      </div>
     </div>
+    </BrowserRouter>
   );
 }
 
