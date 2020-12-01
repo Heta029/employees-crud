@@ -7,11 +7,12 @@ import InputLabel from '@material-ui/core/InputLabel';
 import { createStyles, makeStyles, useTheme, Theme } from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
 import MenuItem from '@material-ui/core/MenuItem';
-import { addOrEdit as AddOrEdit } from '../../api/Employee';
 import firebaseDb from "../../firebase/firebase";
 import { useStateWithCallbackLazy } from 'use-state-with-callback';
-import {IProps,IModal} from '../../types/propTypes/index'
-import {IObjectEmployee} from '../../types/stateTypes/index'
+import { IProps, IModal } from '../../types/propTypes/index'
+import { IObjectEmployee } from '../../types/stateTypes/index'
+import { useTranslation } from 'react-i18next';
+import {addOrEdit as AddOrEdit} from '../../api/Employee'
 
 
 
@@ -23,8 +24,8 @@ function getStyles(name: string, personName: string[], theme: Theme) {
                 : theme.typography.fontWeightMedium,
     };
 }
-
 const MyModal = ({ children, trigger }: IProps) => {
+    const { t, i18n } = useTranslation();
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
 
@@ -33,7 +34,7 @@ const MyModal = ({ children, trigger }: IProps) => {
             {React.cloneElement(trigger, { onClick: toggle })}
             <Modal isOpen={modal} toggle={toggle}>
                 <ModalBody>{children}
-                    <button onClick={() => { setModal(false) }} className="btn btn-primary"><strong>Close</strong></button>
+                    <button onClick={() => { setModal(false) }} className="btn" style={{ background: "linear-gradient(60deg, #ab47bc, #8e24aa)", color: "white" }}><strong>{t("close")}</strong></button>
                 </ModalBody>
             </Modal>
         </div>
@@ -44,7 +45,7 @@ export const ModalFunction = (props: IModal) => {
 
     const [personName, setPersonName] = React.useState<string[]>([]);
     const names = Object.keys(props.employeeObjects).map((key) => (
-        props.employeeObjects[key].team == 'none' && key != props.currentId? props.employeeObjects[key].userName : null
+        props.employeeObjects[key].team == 'none' && key != props.currentId ? props.employeeObjects[key].userName : null
     ));
 
 
@@ -75,11 +76,15 @@ export const ModalFunction = (props: IModal) => {
 
     const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
         setPersonName(event.target.value as string[]);
+    };
 
+    const { t, i18n } = useTranslation();
+
+    const handleAdd = () => {
         personName.map((key) => (
-            Object.keys(props.employeeObjects).map((Emp) => {
-                return (
-
+            Object.keys(props.employeeObjects).map((Emp) =>
+                (
+                    console.log(Emp),
                     setValue({
                         userName: employee[Emp].userName,
                         firstName: employee[Emp].firstName,
@@ -88,30 +93,15 @@ export const ModalFunction = (props: IModal) => {
                         lastName: employee[Emp].lastName,
                         team: employee[props.currentId].userName
                     }, (currentValue: IObjectEmployee) => {
-                        props.employeeObjects[Emp].userName == key ? AddOrEdit(currentValue,Emp):console.log(currentValue);
+                        props.employeeObjects[Emp].userName == key ? AddOrEdit(currentValue, Emp) : console.log(currentValue);
                     })
+            ),
+            console.log(key)
 
-               
-            )
-            }
-
-            )
+        )
         ))
-    };
 
-
-
-    // const handleAdd = () => {
-    //     console.log('hi');
-    //     let teamValue = props.employeeObjects[props.currentId].firstName;
-    //     personName.map((key) => (
-    //         Object.keys(props.employeeObjects).map((Emp) =>
-    //             (
-    //                 props.employeeObjects[Emp].userName == key ? setEmployee({ ...employee, [key]: { team: teamValue } }) : null
-    //             )
-    //         )
-    //     ))
-    // }
+    }
 
     const useStyles = makeStyles((theme: Theme) =>
         createStyles({
@@ -145,15 +135,15 @@ export const ModalFunction = (props: IModal) => {
     };
     const classes = useStyles();
     const theme = useTheme();
-  
+
     return (
 
-        <MyModal trigger={<Button className="btn btn-primary"><strong>Show</strong></Button>}>
+        <MyModal trigger={<Button className="btn" style={{ background: "linear-gradient(60deg, #ab47bc, #8e24aa)", color: "white" }}><strong>Show</strong></Button>}>
             <div>
-                <label>Select team member to add:</label>
+                <label style={{ color: "#8e24aa" }}><strong>{t("multiSelect")}</strong></label>
                 <br />
                 <FormControl className={classes.formControl}>
-                    <InputLabel id="demo-mutiple-chip-label">team</InputLabel>
+                    <InputLabel id="demo-mutiple-chip-label">{t("team")}</InputLabel>
                     <Select
                         labelId="demo-mutiple-chip-label"
                         id="demo-mutiple-chip"
@@ -178,12 +168,12 @@ export const ModalFunction = (props: IModal) => {
                     </Select>
                 </FormControl>
                 <br />
-                <button className="btn btn-primary mb-5" >Add</button>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>First Name</th>
-                            <th>Last Name</th>
+                <button className="btn mb-5" style={{ background: "linear-gradient(60deg, #ab47bc, #8e24aa)", color: "white" }} onClick={handleAdd} >{t("Add")}</button>
+                <table className="table table-borderless table-stripped">
+                    <thead className="thead-light">
+                        <tr className="border border-danger">
+                            <th style={{ background: "linear-gradient(60deg, #ab47bc, #8e24aa)", color: "white" }}>{t("firstName")}</th>
+                            <th style={{ background: "linear-gradient(60deg, #ab47bc, #8e24aa)", color: "white" }}>{t("lastName")}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -192,11 +182,11 @@ export const ModalFunction = (props: IModal) => {
                                 if (props.currentId == '' || props.currentId == undefined || props.employeeObjects == {} || props.employeeObjects == undefined) {
                                     return null;
                                 }
-                                if (props.employeeObjects[key].team == props.employeeObjects[props.currentId].firstName) {
+                                if (props.employeeObjects[key].team == props.employeeObjects[props.currentId].userName) {
                                     return (
                                         <tr key={key}>
-                                            <td>{props.employeeObjects[key].firstName}</td>
-                                            <td>{props.employeeObjects[key].lastName}</td>
+                                            <td style={{ border: "1px solid #8e24aa" }}>{props.employeeObjects[key].firstName}</td>
+                                            <td style={{ border: "1px solid #8e24aa" }}>{props.employeeObjects[key].lastName}</td>
                                         </tr>
 
                                     );

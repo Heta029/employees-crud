@@ -1,15 +1,13 @@
-import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
-import DropDownMenu from 'material-ui/DropDownMenu';
-import MenuItem from 'material-ui/MenuItem';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import React from 'react';
 import { Formik, Form, FormikProps } from 'formik'
 import * as Yup from 'yup';
 import { Grid, TextField, Button, makeStyles, createStyles, Theme } from '@material-ui/core'
 import firebaseDb from "../firebase/firebase";
 import { addOrEdit as AddorEdit } from '../api/Employee';
 import { Link } from "react-router-dom";
-import {IdetailProp} from '../types/propTypes/index';
-import {IProp,FormValues} from '../types/stateTypes/index'
+import { IdetailProp } from '../types/propTypes/index';
+import { IProp, FormValues } from '../types/stateTypes/index'
+import { useTranslation, withTranslation } from 'react-i18next';
 
 
 class AddEditEmployee extends React.Component<IdetailProp, IProp> {
@@ -36,32 +34,34 @@ class AddEditEmployee extends React.Component<IdetailProp, IProp> {
                 if (snapshot.val() != null) {
                     this.setState({
                         employeeObjects: snapshot.val(),
+                    },() => {
+                        if (this.props.match.params.key != null) {
+                            this.setState({ values: snapshot.val()[this.state.key] })
+                        }
                     });
-                    if (this.props.match.params.key != null) {
-                        this.setState({ values: this.state.employeeObjects[this.state.key] })
-                    }
                 }
             })
-
+    
         }
 
 
     }
 
     handleSubmit = (values: FormValues): void => {
-
+        const { t } = this.props;
         if (this.state.key == undefined || this.state.key == '') {
             AddorEdit(values, '');
-            this.setState({ successMessage: 'Added successfully' })
+            this.setState({ successMessage: t("successAdd") })
         }
         else {
             AddorEdit(values, this.state.key);
-            this.setState({ successMessage: 'Edited successfully' })
+            this.setState({ successMessage: t("successEdit") })
         }
 
     };
+     
     render() {
-
+        const { t } = this.props;
         const userNames =
             Object.keys(this.state.employeeObjects).map((key) => (
                 key == this.state.key ? null : this.state.employeeObjects[key].userName
@@ -69,43 +69,38 @@ class AddEditEmployee extends React.Component<IdetailProp, IProp> {
 
         const SignupSchema = Yup.object().shape({
             userName: Yup.string()
-                .min(2, "Too Short!")
-                .notOneOf(userNames, 'Username already taken!')
-                .required("Required"),
+                .min(2, t("tooShort"))
+                .notOneOf(userNames, t("usernameTaken"))
+                .required(t("required")),
             email: Yup.string()
                 .lowercase()
-                .email('Must be a valid email!')
-                .required('Required!'),
+                .email(t("validEmail"))
+                .required(t("required")),
             password: Yup.string()
-                .min(8, 'Minimum 8 characters required!')
-                .required('Required!'),
-            firstName: Yup.string().required("Required"),
-            lastName: Yup.string().required("Required"),
-        });
+                .min(8, t("passwordLength"))
+                .required(t("required")),
+            firstName: Yup.string().required(t("required")),
+            lastName: Yup.string().required(t("required")),
+        });      
 
         return (
-            <div className="container mt-5  border border-danger">
+            <div className="container mt-5 " style={{border:"1px solid #8e24aa"}}>
                 <Formik
                     enableReinitialize
                     initialValues={this.state.values}
                     onSubmit={this.handleSubmit}
                     validationSchema={SignupSchema}
-
-
                 >
                     {(props: FormikProps<FormValues>) => {
                         const {
                             values,
                             touched,
                             errors,
-                            handleBlur,
                             handleChange,
                             isSubmitting,
                         } = props
                         return (
-
-                            <Form className="justify-content-center">
-                                {/* {this.state.mode=="Add"?values=this.state.values:values} */}
+                            <Form className="justify-content-center">                                
                                 <Grid
                                     container
                                     justify="space-around"
@@ -122,13 +117,14 @@ class AddEditEmployee extends React.Component<IdetailProp, IProp> {
                                         <TextField
                                             name="userName"
                                             id="userName"
-                                            label="User Name"
+                                            label={t("userName")}
                                             value={values.userName}
                                             type="text"
+                                            className="mt-5"
                                             helperText={
                                                 errors.userName && touched.userName
                                                     ? errors.userName
-                                                    : 'Enter your user name.'
+                                                    : t("enterUsername")
                                             }
                                             error={
                                                 errors.userName && touched.userName
@@ -150,13 +146,14 @@ class AddEditEmployee extends React.Component<IdetailProp, IProp> {
                                         <TextField
                                             name="firstName"
                                             id="firstName"
-                                            label="First Name"
+                                            label={t("firstName")}
                                             value={values.firstName}
                                             type="text"
+                                            className="mt-3"
                                             helperText={
                                                 errors.firstName && touched.firstName
                                                     ? errors.firstName
-                                                    : 'Enter your first name.'
+                                                    : t("enterFirstname")
                                             }
                                             error={
                                                 errors.firstName && touched.firstName
@@ -178,13 +175,14 @@ class AddEditEmployee extends React.Component<IdetailProp, IProp> {
                                         <TextField
                                             name="lastName"
                                             id="lastName"
-                                            label="Last Name"
+                                            label={t("lastName")}
                                             value={values.lastName}
                                             type="text"
+                                            className="mt-3"
                                             helperText={
                                                 errors.lastName && touched.lastName
                                                     ? errors.lastName
-                                                    : 'Enter your last name.'
+                                                    : t("enterLastname")
                                             }
                                             error={
                                                 errors.lastName && touched.lastName
@@ -206,13 +204,14 @@ class AddEditEmployee extends React.Component<IdetailProp, IProp> {
                                         <TextField
                                             name="password"
                                             id="password"
-                                            label="Password"
+                                            label={t("password")}
                                             value={values.password}
                                             type="text"
+                                            className="mt-3"
                                             helperText={
                                                 errors.password && touched.password
                                                     ? errors.password
-                                                    : 'Enter your password .'
+                                                    : t("enterPassword")
                                             }
                                             error={
                                                 errors.password && touched.password
@@ -220,7 +219,6 @@ class AddEditEmployee extends React.Component<IdetailProp, IProp> {
                                                     : false
                                             }
                                             onChange={handleChange}
-
                                         />
                                     </Grid>
                                     <Grid
@@ -234,13 +232,14 @@ class AddEditEmployee extends React.Component<IdetailProp, IProp> {
                                         <TextField
                                             name="email"
                                             id="email"
-                                            label="Email"
+                                            label={t("email")}
                                             value={values.email}
                                             type="text"
+                                            className="mt-3"
                                             helperText={
                                                 errors.email && touched.email
                                                     ? errors.email
-                                                    : 'Enter your email.'
+                                                    : t("enterEmail")
                                             }
                                             error={
                                                 errors.email && touched.email
@@ -268,42 +267,37 @@ class AddEditEmployee extends React.Component<IdetailProp, IProp> {
                                         xs={10}
 
                                     >
-                                        <div className="txt-danger"><strong>{this.state.successMessage}</strong></div>
+                                        <div style={{color:"#8e24aa"}}><strong>{this.state.successMessage}</strong></div>
                                         <Button
                                             type="submit"
                                             variant="contained"
-                                            color="secondary"
-                                            className="mb-1"
-                                            disabled={isSubmitting}
+                                            className="mb-3 mt-3"
+                                            style={{background:"linear-gradient(60deg, #ab47bc, #8e24aa)",color:"white"}}
+                                        // disabled={isSubmitting}
                                         >
-                                            Submit
+                                            {t("submit")}
                                     </Button>
-                                    <br/>
+                                        
                                         <Link
-                                            className="mb-5 ml-1"
+                                            className="mb-5 ml-3"
                                             to={{
                                                 pathname: "/"
                                             }}
+                                            style={{color:"#8e24aa"}}
                                         >
-                                            <strong>Back</strong>
+                                            <strong className="mb-5">{t("back")}</strong>
 
                                         </Link>
                                     </Grid>
-
                                 </Grid>
-
-
-
-
                             </Form>
                         );
                     }}
                 </Formik>
-
             </div>
         );
     }
 
 }
 
-export default AddEditEmployee;
+export default withTranslation()(AddEditEmployee);

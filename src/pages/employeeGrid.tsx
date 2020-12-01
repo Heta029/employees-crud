@@ -2,18 +2,21 @@ import React, { useState, useEffect } from 'react';
 import firebaseDb from "../firebase/firebase";
 import { Link } from "react-router-dom";
 import { onDelete as OnDelete } from '../api/Employee'
-import i18n from '../locales/index';
 import { useTranslation } from 'react-i18next';
-import { TFunction } from 'i18next';
-import {ModalFunction as Modal}  from '../Components/modal/modal'
-import {IObjectEmployee} from '../types/stateTypes/index'
+import { ModalFunction as Modal } from '../Components/modal/modal'
+import { IObjectEmployee } from '../types/stateTypes/index'
+import GridItem from '../Components/Grid/GridItem';
+import GridContainer from '../Components/Grid/GridContainer';
+import Table from '../Components/Table/Table';
+import Card from '../Components/Card/Card';
+import CardHeader from '../Components/Card/CardHeader';
+import CardBody from '../Components/Card/CardBody';
 
-const EmployeeGrid = (t:TFunction) => {
-    const changeLanguage = (lng:string) => {
+const EmployeeGrid = (props: any) => {
+    const changeLanguage = (lng: string) => {
         i18n.changeLanguage(lng);
-      }
-
-    var [currentId, setCurrentId] = useState('');
+    }
+    const { t, i18n } = useTranslation();
     var [employeeObjects, setEmployeeObjects] = useState<IObjectEmployee>({});
 
     useEffect(() => {
@@ -29,84 +32,80 @@ const EmployeeGrid = (t:TFunction) => {
 
     }, [])
 
-  
+
     const onDelete = (id: string) => {
         OnDelete(id);
     }
 
     return (
 
-        <div className="container-fluid">
-            <div className="row">
-                <h1>{()=>t("WelcomeReact")}</h1>
-                
-                <div className="col-md-12">
-                <div className="float-left mt-5 mb-3">
-                <button onClick={() => changeLanguage('es')}>es</button>
-                <button onClick={() => changeLanguage('en')}>en</button>      
-                </div>
-                    <Link
-                        className="btn btn-primary float-right mt-5 mb-3"
-                        to={{
-                            pathname: "/AddPage"
-                        }}
-                    >
-                       <strong>Add</strong>  
 
-                    </Link>
-                    <table className="table table-borderless table-stripped">
-                        <thead className="thead-light">
-                            <tr>
-                                <th>User Name</th>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Email</th>
-                                <th>Password</th>
-                                <th>Team</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
+        <GridContainer>
+
+            <div className="col-md-12">
+                <div className="float-left mt-5 mb-3">
+                    <button className='btn' style={{background:"linear-gradient(60deg, #ab47bc, #8e24aa)",color:"white"}} onClick={() => changeLanguage('es')}>Spanish</button>
+                    <button className='btn' onClick={() => changeLanguage('en')}>English</button>
+                </div>
+                <Link
+                    className="btn float-right mt-5 mb-3"
+                    to={{
+                        pathname: "/AddPage"
+                    }}
+                    style={{background:"linear-gradient(60deg, #ab47bc, #8e24aa)",color:"white"}}
+                >
+                    <strong>{t("Add")}</strong>
+
+                </Link>
+
+            </div>
+            <br />
+            <GridItem xs={12} sm={12} md={12}>
+
+                <Card>
+                    <CardHeader color="primary">
+                <h4 >{t("employeeTable")}</h4>
+                        <p>
+                            {t("WelcomeMessage")}
+                        </p>
+                    </CardHeader>
+                    <CardBody>
+                        <Table
+                            tableHeaderColor="primary"
+                            tableHead={[t("userName"), t("firstName"), t('lastName'), t('password'), t('email'), t('team'), t('actions')]}
+                            tableData={
                                 (Object.keys(employeeObjects)).map((key) => {
                                     return (
-                                        <tr key={key}>
-                                            <td>{employeeObjects[key].userName}</td>
-                                            <td>{employeeObjects[key].firstName}</td>
-                                            <td>{employeeObjects[key].lastName}</td>
-                                            <td>{employeeObjects[key].email}</td>
-                                            <td>{employeeObjects[key].password}</td>
-                                            <td>{employeeObjects[key].team}</td>
-                                            <td className="bg-light">
-                                                <Modal currentId={key} employeeObjects={employeeObjects}/>
-                                                <br />
-                                                <Link
-                                                    className="btn text-primary"
-                                                    to={ `/EditPage/${key}`
-                                                    }
-                                                >
-                                                    <i className="fas fa-pencil-alt" ></i>
-
-                                                </Link>
-                                                {/* <a className="btn text-primary" onClick={() => { setCurrentId(key) }}>
-                                                </a> */}
-                                                <a className="btn text-danger" onClick={() => { onDelete(key) }}>
-                                                    <i className="far fa-trash-alt"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-
+                                        [employeeObjects[key].userName,
+                                        employeeObjects[key].firstName,
+                                        employeeObjects[key].lastName,
+                                        employeeObjects[key].password,
+                                        employeeObjects[key].email,
+                                        employeeObjects[key].team,
+                                        <div>
+                                            <Modal currentId={key} employeeObjects={employeeObjects} />
+                                            <br />
+                                            <Link
+                                                className="btn text-primary"
+                                                to={`/EditPage/${key}`
+                                                }
+                                            >
+                                                <i className="fas fa-pencil-alt" ></i>
+                                            </Link>
+                                            <a className="btn text-danger" onClick={() => { onDelete(key) }}>
+                                                <i className="far fa-trash-alt"></i>
+                                            </a>
+                                        </div>
+                                        ]
                                     );
-
-
                                 })
                             }
-                        </tbody>
-                    </table>
-               
-                </div>
-            </div>
-        </div>
+                        />
+                    </CardBody>
+                </Card>
+            </GridItem>
+        </GridContainer>
+
     );
 }
 
