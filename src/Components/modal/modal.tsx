@@ -14,8 +14,6 @@ import { IObjectEmployee } from '../../types/stateTypes/index'
 import { useTranslation } from 'react-i18next';
 import {addOrEdit as AddOrEdit} from '../../api/Employee'
 
-
-
 function getStyles(name: string, personName: string[], theme: Theme) {
     return {
         fontWeight:

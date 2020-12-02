@@ -3,7 +3,7 @@ import './App.css';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import EmployeeGrid from './pages/employeeGrid';
 import AddEditPage from './pages/addEditEmployee';
-
+import Login from './pages/login/login'
 
 export function App() {
   
@@ -28,6 +28,11 @@ export function App() {
                 exact
                 path="/AddPage"
                 component={AddEditPage}
+              />
+               <Route
+                exact
+                path="/Login"
+                component={Login}
               />
           </Switch>
               

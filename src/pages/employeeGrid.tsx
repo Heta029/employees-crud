@@ -87,7 +87,7 @@ const EmployeeGrid = (props: any) => {
                                             <br />
                                             <Link
                                                 className="btn text-primary"
-                                                to={`/EditPage/${key}`
+                                                to={`EditPage/${key}`
                                                 }
                                             >
                                                 <i className="fas fa-pencil-alt" ></i>
