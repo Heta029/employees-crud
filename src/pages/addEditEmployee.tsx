@@ -1,7 +1,7 @@
 import React from 'react';
 import { Formik, Form, FormikProps } from 'formik'
 import * as Yup from 'yup';
-import { Grid, TextField, Button, makeStyles, createStyles, Theme } from '@material-ui/core'
+import { Grid, TextField, Button } from '@material-ui/core'
 import firebaseDb from "../firebase/firebase";
 import { addOrEdit as AddorEdit } from '../api/Employee';
 import { Link } from "react-router-dom";
@@ -271,23 +271,13 @@ class AddEditEmployee extends React.Component<IdetailProp, IProp> {
                                         <Button
                                             type="submit"
                                             variant="contained"
-                                            className="mb-3 mt-3"
+                                            className="mb-5 mt-3"
                                             style={{background:"linear-gradient(60deg, #ab47bc, #8e24aa)",color:"white"}}
                                         // disabled={isSubmitting}
                                         >
                                             {t("submit")}
                                     </Button>
-                                        
-                                        <Link
-                                            className="mb-5 ml-3"
-                                            to={{
-                                                pathname: "/"
-                                            }}
-                                            style={{color:"#8e24aa"}}
-                                        >
-                                            <strong className="mb-5">{t("back")}</strong>
-
-                                        </Link>
+                                      
                                     </Grid>
                                 </Grid>
                             </Form>

@@ -1,45 +1,35 @@
-import * as React from 'react';
-import './App.css';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import EmployeeGrid from './pages/employeeGrid';
-import AddEditPage from './pages/addEditEmployee';
-import Login from './pages/login/login'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { createBrowserHistory } from 'history';
+import { HashRouter,Router, Route, Switch, Redirect } from 'react-router-dom';
 
-export function App() {
-  
+// core components
+import Admin from './layout/admin';
+import Login from './pages/login/login';
+import AddEditPage from './pages/addEditEmployee'
+
+import Button from './Components/CustomButtons/Button';
+import './assets/css/material-dashboard-react.css?v=1.6.0';
+import { useUserState,useUserDispatch,signOut } from "./context/UserContext";
+
+function App() {
+  const hist = createBrowserHistory();
 
   return (
-    <BrowserRouter>
-    <div className="row">
-    
-     <div className="col-md-8 offset-md-2">
-          <Switch>
-          <Route
-                exact={true}
-                path="/"
-                component={EmployeeGrid}
-              />
-              <Route
-                exact
-                path="/EditPage/:key"
-                component={AddEditPage}
-              />
-              <Route
-                exact
-                path="/AddPage"
-                component={AddEditPage}
-              />
-               <Route
-                exact
-                path="/Login"
-                component={Login}
-              />
-          </Switch>
-              
-      </div>
-    </div>
-    </BrowserRouter>
+  <div>
+     <Router history={hist}>
+    <Switch>
+    <Route path="/login" component={Login} />
+      {localStorage.getItem('id_token')?<Route path="/admin" component={Admin} />:<Route path="/admin" component={Login} />} 
+      <Route path="/admin/employees" component={AddEditPage}/>  
+      <Route path="/admin/editemployees/:key" component={AddEditPage} />    
+      <Redirect from="/" to="/login" />
+    </Switch>
+   </Router>
+  </div>
   );
+  
 }
+
 
 export default App;

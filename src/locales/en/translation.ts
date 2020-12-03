@@ -28,6 +28,12 @@ export default
     required:'Required',
     validEmail:'Must be a valid email',
     passwordLength:'Minimum 8 characters required',
-    employeeTable:'Employee Table'
+    employeeTable:'Employee Table',
+    login:'Login',
+    logOut:'Log out',
+    forgotPassword:'Forgot password?',
+    set:'Set',
+    addEmployee:'Add Employee',
+    employeeList:'Employee List'
 
 }

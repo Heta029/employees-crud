@@ -11,17 +11,20 @@ import Hidden from '@material-ui/core/Hidden';
 import Menu from '@material-ui/icons/Menu';
 // core components
 import AdminNavbarLinks from './AdminNavbarLinks';
-import RTLNavbarLinks from './RTLNavbarLinks';
 import Button from '../CustomButtons/Button';
-
+import { useUserDispatch, signOut } from "../../context/UserContext";
 import headerStyle from '../../assets/jss/material-dashboard-react/components/headerStyle';
+import { useTranslation } from 'react-i18next';
+
 
 function Header({ ...props }: any) {
+  var userDispatch = useUserDispatch();
+  const { t, i18n } = useTranslation();
   function makeBrand() {
     var name;
     props.routes.map((prop: any, key: any) => {
       if (prop.layout + prop.path === props.location.pathname) {
-        name = props.rtlActive ? prop.rtlName : prop.name;
+        name =  prop.name;
       }
       return null;
     });
@@ -36,12 +39,18 @@ function Header({ ...props }: any) {
       <Toolbar className={classes.container}>
         <div className={classes.flex}>
           {/* Here we create navbar brand, based on route name */}
-          <Button color="transparent" href="#" className={classes.title}>
+          {/* <Button color="transparent" href="#" className={classes.title}>
             {makeBrand()}
+          </Button> */}
+          <Button color="white" className="float-right"
+           onClick={()=>signOut(userDispatch,props.history)
+          }
+          >
+            {t('logOut')}
           </Button>
         </div>
         <Hidden smDown={true} implementation="css">
-          {props.rtlActive ? <RTLNavbarLinks /> : <AdminNavbarLinks />}
+          { <AdminNavbarLinks />}
         </Hidden>
         <Hidden mdUp={true} implementation="css">
           <IconButton

@@ -50,7 +50,7 @@ const EmployeeGrid = (props: any) => {
                 <Link
                     className="btn float-right mt-5 mb-3"
                     to={{
-                        pathname: "/AddPage"
+                        pathname: "employees"
                     }}
                     style={{background:"linear-gradient(60deg, #ab47bc, #8e24aa)",color:"white"}}
                 >
@@ -87,7 +87,7 @@ const EmployeeGrid = (props: any) => {
                                             <br />
                                             <Link
                                                 className="btn text-primary"
-                                                to={`EditPage/${key}`
+                                                to={`editemployees/${key}`
                                                 }
                                             >
                                                 <i className="fas fa-pencil-alt" ></i>

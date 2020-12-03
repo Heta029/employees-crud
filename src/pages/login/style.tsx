@@ -12,7 +12,7 @@ export default makeStyles(theme => ({
     left: 0,
   },
   logotypeContainer: {
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: "#8e24aa",
     width: "60%",
     height: "100%",
     display: "flex",
@@ -121,7 +121,7 @@ export default makeStyles(theme => ({
     },
   },
   textField: {
-    // borderBottomColor: theme.palette.primary.light
+     borderBottomColor: "1px solid #c66cd4"
   },
   formButtons: {
     width: "100%",

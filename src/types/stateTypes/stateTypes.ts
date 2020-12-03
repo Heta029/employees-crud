@@ -12,6 +12,15 @@ export interface IObjectEmployee {
 }
 
 
+
+export interface State {
+    image: string;
+    color: string;
+    hasImage: boolean;
+    fixedClasses: string;
+    mobileOpen: boolean;
+  }
+
 export interface IProp {
 
     key: string;

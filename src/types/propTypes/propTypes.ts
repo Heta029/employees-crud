@@ -14,6 +14,13 @@ export interface IProps {
 
 }
 
+
+export interface Props extends WithTranslation{
+    classes: any;
+    location: any;
+  }
+  
+
 export interface IModal {
     currentId: string;
     employeeObjects: {
