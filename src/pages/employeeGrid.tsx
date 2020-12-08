@@ -11,6 +11,7 @@ import Table from '../Components/Table/Table';
 import Card from '../Components/Card/Card';
 import CardHeader from '../Components/Card/CardHeader';
 import CardBody from '../Components/Card/CardBody';
+import Dictaphone from '../Components/Dictaphone/Dictaphone'
 
 const EmployeeGrid = (props: any) => {
     const changeLanguage = (lng: string) => {
@@ -47,6 +48,7 @@ const EmployeeGrid = (props: any) => {
                     <button className='btn' style={{background:"linear-gradient(60deg, #ab47bc, #8e24aa)",color:"white"}} onClick={() => changeLanguage('es')}>Spanish</button>
                     <button className='btn' onClick={() => changeLanguage('en')}>English</button>
                 </div>
+                <Dictaphone/>
                 <Link
                     className="btn float-right mt-5 mb-3"
                     to={{

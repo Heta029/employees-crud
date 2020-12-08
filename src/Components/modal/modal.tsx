@@ -82,7 +82,7 @@ export const ModalFunction = (props: IModal) => {
         personName.map((key) => (
             Object.keys(props.employeeObjects).map((Emp) =>
                 (
-                    console.log(Emp),
+                    
                     setValue({
                         userName: employee[Emp].userName,
                         firstName: employee[Emp].firstName,

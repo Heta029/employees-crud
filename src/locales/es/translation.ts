@@ -29,7 +29,7 @@ export default {
         employeeTable: 'Mesa de empleados',
         login: 'Iniciar sesión',
         logOut: 'Cerrar sesión',
-        forgotPassword: '¿Olvidaste la contraseña?',
+        forgetPassword: '¿Olvidaste la contraseña?',
         set: 'Conjunto',
         addEmployee:'Añadir empleado',
         employeeList:'Lista de empleados'

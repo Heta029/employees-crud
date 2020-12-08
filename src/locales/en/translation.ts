@@ -31,7 +31,7 @@ export default
     employeeTable:'Employee Table',
     login:'Login',
     logOut:'Log out',
-    forgotPassword:'Forgot password?',
+    forgetPassword:'Forgot password?',
     set:'Set',
     addEmployee:'Add Employee',
     employeeList:'Employee List'
