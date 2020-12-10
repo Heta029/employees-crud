@@ -11,8 +11,6 @@ export interface IObjectEmployee {
     }
 }
 
-
-
 export interface State {
     image: string;
     color: string;

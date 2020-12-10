@@ -12,13 +12,14 @@ import Menu from '@material-ui/icons/Menu';
 // core components
 import AdminNavbarLinks from './AdminNavbarLinks';
 import Button from '../CustomButtons/Button';
-import { useUserDispatch, signOut } from "../../context/UserContext";
 import headerStyle from '../../assets/jss/material-dashboard-react/components/headerStyle';
 import { useTranslation } from 'react-i18next';
+import { connect } from "react-redux";
+import { login } from "../../redux/action/login.action";
+import { withRouter } from "react-router";
 
 
 function Header({ ...props }: any) {
-  var userDispatch = useUserDispatch();
   const { t, i18n } = useTranslation();
   function makeBrand() {
     var name;
@@ -43,8 +44,11 @@ function Header({ ...props }: any) {
             {makeBrand()}
           </Button> */}
           <Button color="white" className="float-right"
-           onClick={()=>signOut(userDispatch,props.history)
-          }
+            onClick={() => {
+              localStorage.setItem('isLogin','false');
+              props.login(false);
+              props.history.push("/");
+            }}
           >
             {t('logOut')}
           </Button>
@@ -71,4 +75,13 @@ function Header({ ...props }: any) {
 //   color: PropTypes.oneOf(['primary', 'info', 'success', 'warning', 'danger'])
 // };
 
-export default withStyles(headerStyle)(Header);
+const mapDispatchToprops = (dispatch:any) => ({
+  login: (isLogin:any) => dispatch(login(isLogin))
+});
+export default connect(
+  null,
+  mapDispatchToprops
+)((withStyles(headerStyle)(withRouter(Header))));
+
+
+//export default withStyles(headerStyle)(Header);

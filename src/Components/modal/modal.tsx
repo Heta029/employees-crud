@@ -12,7 +12,7 @@ import { useStateWithCallbackLazy } from 'use-state-with-callback';
 import { IProps, IModal } from '../../types/propTypes/index'
 import { IObjectEmployee } from '../../types/stateTypes/index'
 import { useTranslation } from 'react-i18next';
-import {addOrEdit as AddOrEdit} from '../../api/Employee'
+import { addOrEdit as AddOrEdit } from '../../api/Employee'
 
 function getStyles(name: string, personName: string[], theme: Theme) {
     return {
@@ -48,7 +48,6 @@ export const ModalFunction = (props: IModal) => {
 
 
     var [employee, setEmployee] = useState<IObjectEmployee>({});
-    let teamValue = props.employeeObjects[props.currentId].firstName;
     var [value, setValue] = useStateWithCallbackLazy({
         userName: '',
         firstName: '',
@@ -78,25 +77,24 @@ export const ModalFunction = (props: IModal) => {
 
     const { t, i18n } = useTranslation();
 
-    const handleAdd = () => {
+    const handleAdd = () => {       
         personName.map((key) => (
             Object.keys(props.employeeObjects).map((Emp) =>
                 (
-                    
-                    setValue({
-                        userName: employee[Emp].userName,
-                        firstName: employee[Emp].firstName,
-                        password: employee[Emp].password,
-                        email: employee[Emp].email,
-                        lastName: employee[Emp].lastName,
-                        team: employee[props.currentId].userName
-                    }, (currentValue: IObjectEmployee) => {
-                        props.employeeObjects[Emp].userName == key ? AddOrEdit(currentValue, Emp) : console.log(currentValue);
-                    })
-            ),
-            console.log(key)
-
-        )
+                    props.employeeObjects[Emp].userName === key ?
+                        setValue({
+                            userName: employee[Emp].userName,
+                            firstName: employee[Emp].firstName,
+                            password: employee[Emp].password,
+                            email: employee[Emp].email,
+                            lastName: employee[Emp].lastName,
+                            team: employee[props.currentId].userName
+                        }, () => {
+                            AddOrEdit(value, Emp);
+                        }) : null
+                ),
+                console.log(key)
+            )
         ))
 
     }

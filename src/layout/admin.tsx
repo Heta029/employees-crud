@@ -16,7 +16,7 @@ import FixedPlugin from '../Components/FixedPlugin/FixedPlugin';
 // import routes from '../routes';
 
 import dashboardStyle from '../assets/jss/material-dashboard-react/layouts/dashboardStyle';
-import DashboardPage from '../pages/employeeGrid';
+import EmployeeGrid from '../pages/employeeGrid';
 import Employees from '../pages/addEditEmployee';
 import image from '../assets/img/sidebar-2.jpg';
 import logo from '../assets/img/reactlogo.png';
@@ -91,15 +91,15 @@ class Dashboard extends React.Component<Props, State> {
     const { t } = this.props;
     const dashboardRoutes = [
         {
-            path: '/dashboard',
+            path: '/employeeList',
             name: t("employeeList"),
-           display:true,
+            display:true,
             icon: DashboardIcon,
-            component:DashboardPage ,
+            component:EmployeeGrid ,
             layout: '/admin'
           },
         {
-          path: '/employees',
+          path: '/addEmployee',
           name: t("addEmployee"),  
           icon: DashboardIcon,
           component: Employees,
@@ -123,9 +123,10 @@ class Dashboard extends React.Component<Props, State> {
           if (prop.layout === '/admin') {
             return (
               <Route
-                path={prop.layout + prop.path}
+                path={ prop.path}
                 component={prop.component}
                 key={key}
+                exact
               />
             );
           }

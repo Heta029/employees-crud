@@ -10,6 +10,8 @@ import {
   Fade,
 } from "@material-ui/core";
 import { useTranslation } from 'react-i18next';
+import { connect } from "react-redux";
+import { login } from "../../redux/action/login.action";
 
 // styles
 import useStyles from "./style";
@@ -18,20 +20,16 @@ import useStyles from "./style";
 import logo from "./logo.svg";
 
 // context
-import { useUserDispatch, loginUser } from "../../context/UserContext";
 
 function Login(props:any){
   var classes = useStyles();
   const { t, i18n } = useTranslation();
 
   // global
- var userDispatch = useUserDispatch();
 
   // local
   var [isLoading, setIsLoading] = useState(false);
- var [error, setError] = useState(false);
-   var [activeTabId, setActiveTabId] = useState(0);
-  var [nameValue, setNameValue] = useState("");
+  var [error, setError] = useState(false);
   var [loginValue, setLoginValue] = useState("admin@flatlogic.com");
   var [passwordValue, setPasswordValue] = useState("password");
   var [newPasswordValue, setNewPasswordValue] = useState('');
@@ -93,21 +91,29 @@ function Login(props:any){
                     disabled={
                       loginValue.length === 0 || passwordValue.length === 0
                     }
-                    onClick={() =>
-                      loginUser(
-                        userDispatch,
-                        loginValue,
-                        passwordValue,
-                        props.history,
-                        setIsLoading,
-                        setError,
-                      )
-                    }
+                    // onClick={() =>
+                    //   loginUser(
+                    //     userDispatch,
+                    //     loginValue,
+                    //     passwordValue,
+                    //     props.history,
+                    //     setIsLoading,
+                    //     setError,
+                    //   )
+                    // }
+
+                    onClick={(e)=>{
+                      e.preventDefault();
+                      localStorage.setItem('isLogin','true');
+                      props.login(true);
+                      setLoginValue('');
+                      setPasswordValue('');
+                    }}
                     variant="contained"
                     style={{background:"#8e24aa",color:"white"}}
                     size="large"
                   >
-                    {t('login')}
+                    {t('login')}                                                                                                                                                                                   
                   </Button>
                 )}
                 <Button
@@ -172,4 +178,10 @@ function Login(props:any){
   );
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch:any) => ({
+  login: (isLogin:any) => dispatch(login(isLogin))
+});
+export default connect(
+  null,
+  mapDispatchToProps
+)(Login);

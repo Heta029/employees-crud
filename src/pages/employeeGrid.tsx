@@ -43,30 +43,23 @@ const EmployeeGrid = (props: any) => {
 
         <GridContainer>
 
+
+
             <div className="col-md-12">
+
+
+                <div> <Dictaphone/></div>
                 <div className="float-left mt-5 mb-3">
                     <button className='btn' style={{background:"linear-gradient(60deg, #ab47bc, #8e24aa)",color:"white"}} onClick={() => changeLanguage('es')}>Spanish</button>
                     <button className='btn' onClick={() => changeLanguage('en')}>English</button>
                 </div>
-                <Dictaphone/>
-                <Link
-                    className="btn float-right mt-5 mb-3"
-                    to={{
-                        pathname: "employees"
-                    }}
-                    style={{background:"linear-gradient(60deg, #ab47bc, #8e24aa)",color:"white"}}
-                >
-                    <strong>{t("Add")}</strong>
-
-                </Link>
-
+               
             </div>
             <br />
             <GridItem xs={12} sm={12} md={12}>
-
                 <Card>
                     <CardHeader color="primary">
-                <h4 >{t("employeeTable")}</h4>
+                    <h4 >{t("employeeTable")}</h4>
                         <p>
                             {t("WelcomeMessage")}
                         </p>
@@ -105,6 +98,7 @@ const EmployeeGrid = (props: any) => {
                         />
                     </CardBody>
                 </Card>
+           
             </GridItem>
         </GridContainer>
 

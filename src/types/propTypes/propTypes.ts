@@ -18,6 +18,7 @@ export interface IProps {
 export interface Props extends WithTranslation{
     classes: any;
     location: any;
+    login:any;
   }
   
 
