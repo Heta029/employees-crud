@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext ,  useState } from "react";
 import {
   Grid,
   CircularProgress,
@@ -12,19 +12,16 @@ import {
 import { useTranslation } from 'react-i18next';
 import { connect } from "react-redux";
 import { login } from "../../redux/action/login.action";
-
-// styles
+import { observer } from "mobx-react";
 import useStyles from "./style";
-
-// logo
+import { LoginStoreContext } from "../../Stores/loginStore";
 import logo from "./logo.svg";
 
 // context
-
-function Login(props:any){
+const Login = observer(()=>{
   var classes = useStyles();
   const { t, i18n } = useTranslation();
-
+  const loginStore = useContext(LoginStoreContext);
   // global
 
   // local
@@ -91,24 +88,12 @@ function Login(props:any){
                     disabled={
                       loginValue.length === 0 || passwordValue.length === 0
                     }
-                    // onClick={() =>
-                    //   loginUser(
-                    //     userDispatch,
-                    //     loginValue,
-                    //     passwordValue,
-                    //     props.history,
-                    //     setIsLoading,
-                    //     setError,
-                    //   )
-                    // }
-
-                    onClick={(e)=>{
-                      e.preventDefault();
-                      localStorage.setItem('isLogin','true');
-                      props.login(true);
-                      setLoginValue('');
-                      setPasswordValue('');
-                    }}
+                 
+                    onClick={()=> {
+                      localStorage.setItem("isLogin","true")
+                      console.log(loginStore.login)
+                      loginStore.provideLogin()}
+                    }
                     variant="contained"
                     style={{background:"#8e24aa",color:"white"}}
                     size="large"
@@ -176,12 +161,9 @@ function Login(props:any){
       </div>
     </Grid>
   );
-}
+})
 
 const mapDispatchToProps = (dispatch:any) => ({
   login: (isLogin:any) => dispatch(login(isLogin))
 });
-export default connect(
-  null,
-  mapDispatchToProps
-)(Login);
+export default Login;

@@ -1,4 +1,5 @@
-import React from 'react';
+import React,{useContext} from 'react';
+import { observer } from "mobx-react"
 import ReactDOM from 'react-dom';
 import { createBrowserHistory } from 'history';
 import { HashRouter,Router, Route, Switch, Redirect } from 'react-router-dom';
@@ -7,18 +8,20 @@ import { HashRouter,Router, Route, Switch, Redirect } from 'react-router-dom';
 import Admin from './layout/admin';
 import Login from './pages/login/login';
 import AddEditPage from './pages/addEditEmployee'
-import { connect } from "react-redux";
 import './assets/css/material-dashboard-react.css?v=1.6.0';
 import EmployeeGrid from './pages/employeeGrid';
+import { LoginStoreContext } from "./Stores/loginStore";
 
-function App(props:any) {
+
+const App = observer(()=> {
   const hist = createBrowserHistory();
+  const loginStore = useContext(LoginStoreContext);
 
   return (
   <div>
      <Router history={hist}>
     <Switch>
-      {props.isLogin?<Route path="/" component={Admin} />      
+      {loginStore.login?<Route path="/" component={Admin} />      
       :<Route path="/" component={Login} />}      
 
     </Switch>
@@ -26,9 +29,9 @@ function App(props:any) {
   </div>
   );
   
-}
+})
 const mapStateToProps = ({ login: { isLogin } }:any) => ({
   isLogin
 });
-export default connect(mapStateToProps)(App);
+export default App;
 

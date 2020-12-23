@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useContext} from 'react';
 import classNames from 'classnames';
 // import PropTypes from 'prop-types';
 // @material-ui/core components
@@ -17,9 +17,12 @@ import { useTranslation } from 'react-i18next';
 import { connect } from "react-redux";
 import { login } from "../../redux/action/login.action";
 import { withRouter } from "react-router";
+import {observer} from "mobx-react";
+import {LoginStoreContext} from "../../Stores/loginStore"
 
 
-function Header({ ...props }: any) {
+const Header=observer(({ ...props }: any)=> {
+  const loginStore = useContext(LoginStoreContext);
   const { t, i18n } = useTranslation();
   function makeBrand() {
     var name;
@@ -45,8 +48,8 @@ function Header({ ...props }: any) {
           </Button> */}
           <Button color="white" className="float-right"
             onClick={() => {
-              localStorage.setItem('isLogin','false');
-              props.login(false);
+              localStorage.setItem("isLogin","false")
+              loginStore.provideLogin();
               props.history.push("/");
             }}
           >
@@ -68,7 +71,7 @@ function Header({ ...props }: any) {
       </Toolbar>
     </AppBar>
   );
-}
+})
 
 // Header.propTypes = {
 //   classes: PropTypes.object.isRequired,
@@ -78,10 +81,7 @@ function Header({ ...props }: any) {
 const mapDispatchToprops = (dispatch:any) => ({
   login: (isLogin:any) => dispatch(login(isLogin))
 });
-export default connect(
-  null,
-  mapDispatchToprops
-)((withStyles(headerStyle)(withRouter(Header))));
+export default (withStyles(headerStyle)(withRouter(Header)));
 
 
 //export default withStyles(headerStyle)(Header);
