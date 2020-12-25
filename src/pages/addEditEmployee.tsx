@@ -4,11 +4,9 @@ import * as Yup from 'yup';
 import { Grid, TextField, Button } from '@material-ui/core'
 import firebaseDb from "../firebase/firebase";
 import { addOrEdit as AddorEdit } from '../api/Employee';
-import { Link } from "react-router-dom";
 import { IdetailProp } from '../types/propTypes/index';
 import { IProp, FormValues } from '../types/stateTypes/index'
-import { useTranslation, withTranslation } from 'react-i18next';
-
+import { withTranslation } from 'react-i18next';
 
 class AddEditEmployee extends React.Component<IdetailProp, IProp> {
 
@@ -29,7 +27,6 @@ class AddEditEmployee extends React.Component<IdetailProp, IProp> {
 
         }
         this.componentDidMount = () => {
-
             firebaseDb.child('employee-crud').on('value', snapshot => {
                 if (snapshot.val() != null) {
                     this.setState({
@@ -40,11 +37,8 @@ class AddEditEmployee extends React.Component<IdetailProp, IProp> {
                         }
                     });
                 }
-            })
-    
+            })    
         }
-
-
     }
 
     handleSubmit = (values: FormValues): void => {

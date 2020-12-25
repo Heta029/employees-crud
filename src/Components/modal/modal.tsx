@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useContext} from 'react'
 import { Button, Modal, ModalBody } from "reactstrap";
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
@@ -7,12 +7,12 @@ import InputLabel from '@material-ui/core/InputLabel';
 import { createStyles, makeStyles, useTheme, Theme } from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
 import MenuItem from '@material-ui/core/MenuItem';
-import firebaseDb from "../../firebase/firebase";
 import { useStateWithCallbackLazy } from 'use-state-with-callback';
 import { IProps, IModal } from '../../types/propTypes/index'
-import { IObjectEmployee } from '../../types/stateTypes/index'
 import { useTranslation } from 'react-i18next';
 import { addOrEdit as AddOrEdit } from '../../api/Employee'
+import { EmployeeStoreContext } from '../../Stores/employeeStore';
+import { observer } from 'mobx-react';
 
 function getStyles(name: string, personName: string[], theme: Theme) {
     return {
@@ -39,15 +39,13 @@ const MyModal = ({ children, trigger }: IProps) => {
     );
 };
 
-export const ModalFunction = (props: IModal) => {
-
+export const ModalFunction = observer((props: IModal) => {
+    const employeeStore = useContext(EmployeeStoreContext);
     const [personName, setPersonName] = React.useState<string[]>([]);
-    const names = Object.keys(props.employeeObjects).map((key) => (
-        props.employeeObjects[key].team == 'none' && key != props.currentId ? props.employeeObjects[key].userName : null
+    const names = Object.keys(employeeStore.employee).map((key: any) => (
+        employeeStore.employee[key].team == 'none' && key != props.currentId ? employeeStore.employee[key].userName : null
     ));
 
-
-    var [employee, setEmployee] = useState<IObjectEmployee>({});
     var [value, setValue] = useStateWithCallbackLazy({
         userName: '',
         firstName: '',
@@ -57,46 +55,30 @@ export const ModalFunction = (props: IModal) => {
         team: 'none',
     });
 
-    useEffect(() => {
-
-        firebaseDb.child('employee-crud').on('value', snapshot => {
-            if (snapshot.val() != null) {
-                setEmployee({
-                    ...snapshot.val()
-                })
-                    ;
-            }
-        })
-
-    }, [])
-
-
     const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
         setPersonName(event.target.value as string[]);
     };
 
     const { t, i18n } = useTranslation();
-
-    const handleAdd = () => {       
-        personName.map((key) => (
-            Object.keys(props.employeeObjects).map((Emp) =>
-                (
-                    props.employeeObjects[Emp].userName === key ?
-                        setValue({
-                            userName: employee[Emp].userName,
-                            firstName: employee[Emp].firstName,
-                            password: employee[Emp].password,
-                            email: employee[Emp].email,
-                            lastName: employee[Emp].lastName,
-                            team: employee[props.currentId].userName
-                        }, () => {
-                            AddOrEdit(value, Emp);
-                        }) : null
-                ),
+    const handleAdd = () => {
+        personName.map((key: any) => (
+            Object.keys(employeeStore.employee).map((Emp: any) =>
+            (
+                employeeStore.employee[Emp].userName === key ?
+                    setValue({
+                        userName: employeeStore.employee[Emp].userName,
+                        firstName: employeeStore.employee[Emp].firstName,
+                        password: employeeStore.employee[Emp].password,
+                        email: employeeStore.employee[Emp].email,
+                        lastName: employeeStore.employee[Emp].lastName,
+                        team: employeeStore.employee[props.currentId].userName
+                    }, () => {
+                        AddOrEdit(value, Emp);
+                    }) : null
+            ),
                 console.log(key)
             )
         ))
-
     }
 
     const useStyles = makeStyles((theme: Theme) =>
@@ -131,9 +113,8 @@ export const ModalFunction = (props: IModal) => {
     };
     const classes = useStyles();
     const theme = useTheme();
-
+    
     return (
-
         <MyModal trigger={<Button className="btn" style={{ background: "linear-gradient(60deg, #ab47bc, #8e24aa)", color: "white" }}><strong>Show</strong></Button>}>
             <div>
                 <label style={{ color: "#8e24aa" }}><strong>{t("multiSelect")}</strong></label>
@@ -156,7 +137,7 @@ export const ModalFunction = (props: IModal) => {
                         )}
                         MenuProps={MenuProps}
                     >
-                        {names.map((name) => (
+                        {names.map((name: any) => (
                             <MenuItem key={name} value={name == null ? '' : name} style={getStyles(name == null ? '' : name, personName, theme)}>
                                 {name}
                             </MenuItem>
@@ -174,15 +155,16 @@ export const ModalFunction = (props: IModal) => {
                     </thead>
                     <tbody>
                         {
-                            Object.keys(props.employeeObjects).map((key) => {
-                                if (props.currentId == '' || props.currentId == undefined || props.employeeObjects == {} || props.employeeObjects == undefined) {
+                            Object.keys(employeeStore.employee).map((key: any) => {
+                                if (props.currentId == '' || props.currentId == undefined || employeeStore.employee == {} || employeeStore.employee == undefined) {
+                                    console.log(employeeStore.employee)
                                     return null;
                                 }
-                                if (props.employeeObjects[key].team == props.employeeObjects[props.currentId].userName) {
+                                if (employeeStore.employee[key].team == employeeStore.employee[props.currentId].userName) {
                                     return (
                                         <tr key={key}>
-                                            <td style={{ border: "1px solid #8e24aa" }}>{props.employeeObjects[key].firstName}</td>
-                                            <td style={{ border: "1px solid #8e24aa" }}>{props.employeeObjects[key].lastName}</td>
+                                            <td style={{ border: "1px solid #8e24aa" }}>{employeeStore.employee[key].firstName}</td>
+                                            <td style={{ border: "1px solid #8e24aa" }}>{employeeStore.employee[key].lastName}</td>
                                         </tr>
 
                                     );
@@ -190,10 +172,9 @@ export const ModalFunction = (props: IModal) => {
                             }
                             )
                         }
-
                     </tbody>
                 </table>
             </div>
         </MyModal>
     )
-}
+})
