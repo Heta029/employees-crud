@@ -31,6 +31,6 @@ export default {
         logOut: 'Cerrar sesión',
         forgetPassword: '¿Olvidaste la contraseña?',
         set: 'Conjunto',
-        addEmployee:'Añadir empleado',
-        employeeList:'Lista de empleados'
+        addEmployee: 'Añadir empleado',
+        employeeList: 'Lista de empleados'
 }

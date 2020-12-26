@@ -1,4 +1,4 @@
-import React, { useState, useContext} from 'react'
+import React, { useState, useContext } from 'react'
 import { Button, Modal, ModalBody } from "reactstrap";
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
@@ -113,7 +113,7 @@ export const ModalFunction = observer((props: IModal) => {
     };
     const classes = useStyles();
     const theme = useTheme();
-    
+
     return (
         <MyModal trigger={<Button className="btn" style={{ background: "linear-gradient(60deg, #ab47bc, #8e24aa)", color: "white" }}><strong>Show</strong></Button>}>
             <div>

@@ -1,6 +1,5 @@
 import firebase from 'firebase';
 
-
 const firebaseConfig = {
   apiKey: "AIzaSyCqvfEuJaxr7TD9kRnAQ42iy3UeGO9d1FA",
   authDomain: "employee-crud-596c7.firebaseapp.com",
@@ -13,5 +12,5 @@ const firebaseConfig = {
 };
 // Initialize Firebase
 var fireDb = firebase.initializeApp(firebaseConfig);
-  
-  export default fireDb.database().ref();
+
+export default fireDb.database().ref();

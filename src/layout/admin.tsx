@@ -1,28 +1,19 @@
-// /* eslint-disable */
 import React from 'react';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import { Switch, Route, Redirect } from 'react-router-dom';
-// creates a beautiful scrollbar
 import PerfectScrollbar from 'perfect-scrollbar';
 import 'perfect-scrollbar/css/perfect-scrollbar.css';
-// @material-ui/core components
 import withStyles from '@material-ui/core/styles/withStyles';
-// core components
 import Navbar from '../Components/Navbars/Navbar';
-import Footer from '../Components/Footer/Footer';
 import Sidebar from '../Components/Sidebar/Sidebar';
-import FixedPlugin from '../Components/FixedPlugin/FixedPlugin';
-
-// import routes from '../routes';
-
 import dashboardStyle from '../assets/jss/material-dashboard-react/layouts/dashboardStyle';
 import EmployeeGrid from '../pages/employeeGrid';
 import Employees from '../pages/addEditEmployee';
 import image from '../assets/img/sidebar-2.jpg';
 import logo from '../assets/img/reactlogo.png';
-import { useTranslation, withTranslation } from 'react-i18next';
-import {Props} from '../types/propTypes/index';
-import {State} from '../types/stateTypes/index'
+import { withTranslation } from 'react-i18next';
+import { Props } from '../types/propTypes/index';
+import { State } from '../types/stateTypes/index'
 
 class Dashboard extends React.Component<Props, State> {
   refs: any;
@@ -36,7 +27,7 @@ class Dashboard extends React.Component<Props, State> {
       mobileOpen: false
     };
   }
-  
+
   handleImageClick = (i: string) => {
     this.setState({ image: i });
   }
@@ -90,40 +81,38 @@ class Dashboard extends React.Component<Props, State> {
   render() {
     const { t } = this.props;
     const dashboardRoutes = [
-        {
-            path: '/employeeList',
-            name: t("employeeList"),
-            display:true,
-            icon: DashboardIcon,
-            component:EmployeeGrid ,
-            layout: '/admin'
-          },
-        {
-          path: '/addEmployee',
-          name: t("addEmployee"),  
-          icon: DashboardIcon,
-          component: Employees,
-          layout: '/admin',
-          display:true,
-        },
-        {
-            path: '/editemployees/:key',
-            name: '',  
-            icon:"",
-            component: Employees,
-            layout: '/admin',
-            display:false,
-          }
-     
+      {
+        path: '/employeeList',
+        name: t("employeeList"),
+        display: true,
+        icon: DashboardIcon,
+        component: EmployeeGrid,
+        layout: '/admin'
+      },
+      {
+        path: '/addEmployee',
+        name: t("addEmployee"),
+        icon: DashboardIcon,
+        component: Employees,
+        layout: '/admin',
+        display: true,
+      },
+      {
+        path: '/editemployees/:key',
+        name: '',
+        icon: "",
+        component: Employees,
+        layout: '/admin',
+        display: false,
+      }
     ];
-    
     const switchRoutes = (
       <Switch>
         {dashboardRoutes.map((prop, key) => {
           if (prop.layout === '/admin') {
             return (
               <Route
-                path={ prop.path}
+                path={prop.path}
                 component={prop.component}
                 key={key}
                 exact
@@ -133,7 +122,7 @@ class Dashboard extends React.Component<Props, State> {
         })}
       </Switch>
     );
-    
+
     const { classes, ...rest } = this.props;
     return (
       <div className={classes.wrapper}>
@@ -147,7 +136,7 @@ class Dashboard extends React.Component<Props, State> {
           color={this.state.color}
           {...rest}
         />
-        
+
         <div className={classes.mainPanel} ref="mainPanel">
           <Navbar
             routes={dashboardRoutes}
@@ -160,13 +149,13 @@ class Dashboard extends React.Component<Props, State> {
               <div className={classes.container}>{switchRoutes}</div>
             </div>
           ) : (
-            <div className={classes.map}>{switchRoutes}</div>
-          )}
-      
+              <div className={classes.map}>{switchRoutes}</div>
+            )}
+
         </div>
       </div>
     );
   }
 }
 
-export default    withTranslation()(withStyles(dashboardStyle)(Dashboard))  ;
+export default withTranslation()(withStyles(dashboardStyle)(Dashboard));

@@ -1,14 +1,14 @@
-import { observable ,makeAutoObservable} from "mobx";
+import { observable, makeAutoObservable } from "mobx";
 import { createContext } from "react";
 
-class loginsStore {
-  @observable login = localStorage.getItem('isLogin')=='true'?true:false;
+class LoginsStore {
+  @observable login = localStorage.getItem('isLogin') == 'true' ? true : false;
   constructor() {
     makeAutoObservable(this)
-}
+  }
   provideLogin() {
-    this.login? this.login = false : this.login = true
-}
+    this.login ? this.login = false : this.login = true
+  }
 }
 
-export const LoginStoreContext = createContext(new loginsStore());
+export const LoginStoreContext = createContext(new LoginsStore());

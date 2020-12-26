@@ -1,14 +1,12 @@
 import firebaseDb from "../firebase/firebase";
 
-export const addOrEdit = (obj: Object,currentId:string) => {
-
+export const addOrEdit = (obj: Object, currentId: string) => {
     if (currentId == '')
         firebaseDb.child('employee-crud').push(
             obj,
             err => {
                 if (err)
                     console.log(err)
-                
             })
     else
         firebaseDb.child(`employee-crud/${currentId}`).set(
@@ -16,7 +14,6 @@ export const addOrEdit = (obj: Object,currentId:string) => {
             err => {
                 if (err)
                     console.log(err)
-               
             })
 }
 
@@ -26,7 +23,7 @@ export const onDelete = (id: string) => {
         firebaseDb.child(`employee-crud/${id}`).remove(
             err => {
                 if (err)
-                    console.log(err)            
+                    console.log(err)
             })
     }
 }

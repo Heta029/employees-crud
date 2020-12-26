@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 import { Link } from "react-router-dom";
 import { onDelete as OnDelete } from '../api/Employee';
 import { useTranslation } from 'react-i18next';
@@ -10,10 +10,10 @@ import Card from '../Components/Card/Card';
 import CardHeader from '../Components/Card/CardHeader';
 import CardBody from '../Components/Card/CardBody';
 import Dictaphone from '../Components/Dictaphone/Dictaphone';
-import {EmployeeStoreContext} from '../Stores/employeeStore';
-import {observer} from 'mobx-react';
+import { EmployeeStoreContext } from '../Stores/employeeStore';
+import { observer } from 'mobx-react';
 
-const EmployeeGrid = observer((props: any) => {
+const EmployeeGrid = observer(() => {
     const changeLanguage = (lng: string) => {
         i18n.changeLanguage(lng);
     }
@@ -22,21 +22,21 @@ const EmployeeGrid = observer((props: any) => {
     const onDelete = (id: string) => {
         OnDelete(id);
     }
-    
+
     return (
         <GridContainer>
             <div className="col-md-12">
-                <div> <Dictaphone/></div>
+                <div> <Dictaphone /></div>
                 <div className="float-left mt-5 mb-3">
-                    <button className='btn' style={{background:"linear-gradient(60deg, #ab47bc, #8e24aa)",color:"white"}} onClick={() => changeLanguage('es')}>Spanish</button>
+                    <button className='btn' style={{ background: "linear-gradient(60deg, #ab47bc, #8e24aa)", color: "white" }} onClick={() => changeLanguage('es')}>Spanish</button>
                     <button className='btn' onClick={() => changeLanguage('en')}>English</button>
-                </div>               
+                </div>
             </div>
             <br />
             <GridItem xs={12} sm={12} md={12}>
                 <Card>
                     <CardHeader color="primary">
-                    <h4 >{t("employeeTable")}</h4>
+                        <h4 >{t("employeeTable")}</h4>
                         <p>
                             {t("WelcomeMessage")}
                         </p>
@@ -46,7 +46,7 @@ const EmployeeGrid = observer((props: any) => {
                             tableHeaderColor="primary"
                             tableHead={[t("userName"), t("firstName"), t('lastName'), t('password'), t('email'), t('team'), t('actions')]}
                             tableData={
-                                (Object.keys(employeeStore.employee)).map((key:any) => {
+                                (Object.keys(employeeStore.employee)).map((key: any) => {
                                     return (
                                         [employeeStore.employee[key].userName,
                                         employeeStore.employee[key].firstName,
@@ -55,7 +55,7 @@ const EmployeeGrid = observer((props: any) => {
                                         employeeStore.employee[key].email,
                                         employeeStore.employee[key].team,
                                         <div>
-                                            <Modal currentId = {key}/>
+                                            <Modal currentId={key} />
                                             <br />
                                             <Link
                                                 className="btn text-primary"
@@ -74,7 +74,7 @@ const EmployeeGrid = observer((props: any) => {
                             }
                         />
                     </CardBody>
-                </Card>           
+                </Card>
             </GridItem>
         </GridContainer>
     );

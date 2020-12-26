@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import GridItem from '../Grid/GridItem';
 import GridContainer from '../Grid/GridContainer';
-import Table from '../Table/Table';
 import Card from '../Card/Card';
 import CardHeader from '../Card/CardHeader';
 import CardBody from '../Card/CardBody';
@@ -11,7 +10,7 @@ const Dictaphone = () => {
     const [message, setMessage] = useState<string[]>([]);
     const [messageOut, setMessageOut] = useState<string[]>([]);
     let today = new Date(),
-    date = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear() + '  ' + today.getHours() + ':' + today.getMinutes();
+        date = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear() + '  ' + today.getHours() + ':' + today.getMinutes();
     const commands = [
         {
             command: 'reset',
@@ -19,11 +18,11 @@ const Dictaphone = () => {
         },
         {
             command: 'In',
-            callback: () => { setMessage([...message,date]);console.log(message); }
+            callback: () => { setMessage([...message, date]); console.log(message); }
         },
         {
             command: 'Out',
-            callback: () => { setMessageOut([...messageOut,date])}
+            callback: () => { setMessageOut([...messageOut, date]) }
         },
     ]
     const {
@@ -83,22 +82,24 @@ const Dictaphone = () => {
                                 <tbody>
                                     {
                                         message.map((key: any) => {
-                                            return(
-                                            <tr key={key}>
-                                                <td style={{ border: "1px solid #8e24aa" }}>{key}</td>
-                                            <td style={{ border: "1px solid #8e24aa" }}>...</td>
-                                            </tr>
-                                        );})
+                                            return (
+                                                <tr key={key}>
+                                                    <td style={{ border: "1px solid #8e24aa" }}>{key}</td>
+                                                    <td style={{ border: "1px solid #8e24aa" }}>...</td>
+                                                </tr>
+                                            );
+                                        })
 
-                                    }                                                                                                                                       
+                                    }
                                     {
-                                         messageOut.map((key: any) => {
-                                            return(
-                                            <tr key={key}>
-                                                <td style={{ border: "1px solid #8e24aa" }}>...</td>
-                                                <td style={{ border: "1px solid #8e24aa" }}>{key}</td>
-                                            </tr>
-                                        );})
+                                        messageOut.map((key: any) => {
+                                            return (
+                                                <tr key={key}>
+                                                    <td style={{ border: "1px solid #8e24aa" }}>...</td>
+                                                    <td style={{ border: "1px solid #8e24aa" }}>{key}</td>
+                                                </tr>
+                                            );
+                                        })
                                     }
 
 

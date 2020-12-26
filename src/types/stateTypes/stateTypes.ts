@@ -1,5 +1,4 @@
 
-
 export interface IObjectEmployee {
     [key: string]: {
         firstName: string;
@@ -17,10 +16,9 @@ export interface State {
     hasImage: boolean;
     fixedClasses: string;
     mobileOpen: boolean;
-  }
+}
 
 export interface IProp {
-
     key: string;
     successMessage: string;
     employeeObjects: {
@@ -35,9 +33,6 @@ export interface IProp {
         }
     };
     values: FormValues;
-
-    // addOrEdit: Function;
-
 }
 
 export interface FormValues {

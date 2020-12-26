@@ -24,20 +24,20 @@ class AddEditEmployee extends React.Component<IdetailProp, IProp> {
                 team: 'none',
             },
             successMessage: '',
-
         }
+
         this.componentDidMount = () => {
             firebaseDb.child('employee-crud').on('value', snapshot => {
                 if (snapshot.val() != null) {
                     this.setState({
                         employeeObjects: snapshot.val(),
-                    },() => {
+                    }, () => {
                         if (this.props.match.params.key != null) {
                             this.setState({ values: snapshot.val()[this.state.key] })
                         }
                     });
                 }
-            })    
+            })
         }
     }
 
@@ -53,15 +53,14 @@ class AddEditEmployee extends React.Component<IdetailProp, IProp> {
         }
 
     };
-     
+
     render() {
         const { t } = this.props;
         const userNames =
             Object.keys(this.state.employeeObjects).map((key) => (
                 key == this.state.key ? null : this.state.employeeObjects[key].userName
             ));
-
-        const SignupSchema = Yup.object().shape({
+        const validation = Yup.object().shape({
             userName: Yup.string()
                 .min(2, t("tooShort"))
                 .notOneOf(userNames, t("usernameTaken"))
@@ -75,15 +74,15 @@ class AddEditEmployee extends React.Component<IdetailProp, IProp> {
                 .required(t("required")),
             firstName: Yup.string().required(t("required")),
             lastName: Yup.string().required(t("required")),
-        });      
+        });
 
         return (
-            <div className="container mt-5 " style={{border:"1px solid #8e24aa"}}>
+            <div className="container mt-5 " style={{ border: "1px solid #8e24aa" }}>
                 <Formik
                     enableReinitialize
                     initialValues={this.state.values}
                     onSubmit={this.handleSubmit}
-                    validationSchema={SignupSchema}
+                    validationSchema={validation}
                 >
                     {(props: FormikProps<FormValues>) => {
                         const {
@@ -91,10 +90,9 @@ class AddEditEmployee extends React.Component<IdetailProp, IProp> {
                             touched,
                             errors,
                             handleChange,
-                            isSubmitting,
                         } = props
                         return (
-                            <Form className="justify-content-center">                                
+                            <Form className="justify-content-center">
                                 <Grid
                                     container
                                     justify="space-around"
@@ -126,7 +124,6 @@ class AddEditEmployee extends React.Component<IdetailProp, IProp> {
                                                     : false
                                             }
                                             onChange={handleChange}
-
                                         />
                                     </Grid>
                                     <Grid
@@ -184,7 +181,6 @@ class AddEditEmployee extends React.Component<IdetailProp, IProp> {
                                                     : false
                                             }
                                             onChange={handleChange}
-
                                         />
                                     </Grid>
                                     <Grid
@@ -241,7 +237,6 @@ class AddEditEmployee extends React.Component<IdetailProp, IProp> {
                                                     : false
                                             }
                                             onChange={handleChange}
-
                                         />
                                     </Grid>
                                     <Grid
@@ -251,7 +246,6 @@ class AddEditEmployee extends React.Component<IdetailProp, IProp> {
                                         sm={10}
                                         xs={10}
                                     >
-
                                     </Grid>
                                     <Grid
                                         item
@@ -259,19 +253,16 @@ class AddEditEmployee extends React.Component<IdetailProp, IProp> {
                                         md={10}
                                         sm={10}
                                         xs={10}
-
                                     >
-                                        <div style={{color:"#8e24aa"}}><strong>{this.state.successMessage}</strong></div>
+                                        <div style={{ color: "#8e24aa" }}><strong>{this.state.successMessage}</strong></div>
                                         <Button
                                             type="submit"
                                             variant="contained"
                                             className="mb-5 mt-3"
-                                            style={{background:"linear-gradient(60deg, #ab47bc, #8e24aa)",color:"white"}}
-                                        // disabled={isSubmitting}
+                                            style={{ background: "linear-gradient(60deg, #ab47bc, #8e24aa)", color: "white" }}
                                         >
                                             {t("submit")}
-                                    </Button>
-                                      
+                                        </Button>
                                     </Grid>
                                 </Grid>
                             </Form>
@@ -281,7 +272,6 @@ class AddEditEmployee extends React.Component<IdetailProp, IProp> {
             </div>
         );
     }
-
 }
 
 export default withTranslation()(AddEditEmployee);
